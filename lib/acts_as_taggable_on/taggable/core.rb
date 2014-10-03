@@ -412,7 +412,7 @@ module ActsAsTaggableOn::Taggable
 
         # Create new taggings:
         new_tags.each do |tag|
-          taggings.create!(tag_id: tag.id, context: context.to_s, taggable: self)
+          taggings.find_or_create_by!(tag_id: tag.id, context: context.to_s, taggable: self)
         end
       end
 
@@ -432,7 +432,7 @@ module ActsAsTaggableOn::Taggable
       tag_lists = tag_types.map {|tags_type| "#{tags_type.to_s.singularize}_list"}
       super.delete_if {|attr| tag_lists.include? attr }
     end
-    
+
     ##
     # Override this hook if you wish to subclass {ActsAsTaggableOn::Tag} --
     # context is provided so that you may conditionally use a Tag subclass
